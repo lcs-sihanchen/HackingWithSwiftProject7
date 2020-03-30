@@ -71,6 +71,8 @@
  4. JSON has strings and integers too. Notice how the strings are all wrapped in quotes,
  whereas the integers aren't.
 
+ Swift has a built-in support called Codable
+ Int and String automatically conform to Codable
  
  
  
@@ -81,7 +83,7 @@ import UIKit
 
 class ViewController: UITableViewController {
     
-    var petitions = [String]()
+    var petitions = [Petition]()
     
     
     
