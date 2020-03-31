@@ -141,8 +141,15 @@ class ViewController: UITableViewController {
         }
         
     }
-
     
+    // This time there is no detail view controller in user interface therefore it will be much easier to load the view directly from the code
+    
+    override func tableView(_ tableView: UITableView,
+    didSelectRowAt indexPath: IndexPath) {
+       let vc = DetailViewController()
+       vc.detailItem = petitions[indexPath.row]
+       navigationController?.pushViewController(vc, animated: true)
+    }
     
 
 }
