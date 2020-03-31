@@ -117,8 +117,10 @@ class ViewController: UITableViewController {
        let cell = tableView.dequeueReusableCell(withIdentifier:
     "Cell", for: indexPath)
        
+       // access the petitions in the array
        let petition = petitions[indexPath.row]
-        
+       
+        // Now constant petition is of type PETITION, therefore it can use its property ".title"
        cell.textLabel?.text = petition.title
        // Subtitle of the cell
        cell.detailTextLabel?.text = petition.body
@@ -133,6 +135,8 @@ class ViewController: UITableViewController {
         // Petitions.self is a way json decoder to know what to convert, that is to decode the whole type instead of an instance of it
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json){
             petitions = jsonPetitions.results
+            
+            // Everytime the view has been opened, refresh
             tableView.reloadData()
         }
         
