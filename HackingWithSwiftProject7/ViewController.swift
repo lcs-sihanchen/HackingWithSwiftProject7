@@ -90,7 +90,22 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-    }
+        // Download the content(JSON file)
+        // let urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
+        
+           let urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
+           // If let to make sure the URL is valid
+           // Possibly more URLs here
+           if let url = URL(string: urlString) {
+              // The method here returns the contents from the URL
+              // It may throw some error due to network connection(try?)
+              if let data = try? Data(contentsOf: url) {
+                // we're OK to parse!
+                parse(json: data)
+                }
+        }
+                }
+    
 
     override func tableView(_ tableView: UITableView,
     numberOfRowsInSection section: Int) -> Int {
@@ -102,11 +117,27 @@ class ViewController: UITableViewController {
        let cell = tableView.dequeueReusableCell(withIdentifier:
     "Cell", for: indexPath)
        
-       cell.textLabel?.text = "Title goes here"
+       let petition = petitions[indexPath.row]
+        
+       cell.textLabel?.text = petition.title
        // Subtitle of the cell
-       cell.detailTextLabel?.text = "Subtitle goes here"
+       cell.detailTextLabel?.text = petition.body
+       
+       
        return cell
     }
+    
+    func parse(json: Data) {
+        let decoder = JSONDecoder()
+        
+        // Petitions.self is a way json decoder to know what to convert, that is to decode the whole type instead of an instance of it
+        if let jsonPetitions = try? decoder.decode(Petitions.self, from: json){
+            petitions = jsonPetitions.results
+            tableView.reloadData()
+        }
+        
+    }
+
     
     
 

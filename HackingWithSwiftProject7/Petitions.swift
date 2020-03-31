@@ -8,6 +8,7 @@
 
 import Foundation
 
-struct Petitions {
-    var result: [Petition]
+// An array of petitions: Each contains title, body and signature count
+struct Petitions: Codable {
+    var results: [Petition]
 }
