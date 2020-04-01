@@ -92,6 +92,8 @@ class ViewController: UITableViewController {
         // Do any additional setup after loading the view.
         // Download the content(JSON file)
         // let urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
+        let credits = UIBarButtonItem(title: "Credit", style: .plain, target: self, action: #selector(showCredit))
+          navigationItem.rightBarButtonItem = credits
         
         let urlString: String
         
@@ -114,10 +116,17 @@ class ViewController: UITableViewController {
         }
         showError()
         
+ 
         
         }
     
-
+    @objc func showCredit() {
+        let ac = UIAlertController(title: "Credit", message: "The data comes from the We The People API of the Whitehouse.", preferredStyle: .alert)
+        
+        ac.addAction(UIAlertAction(title: "Continue", style: .default))
+        
+        present(ac, animated: true)
+    }
     override func tableView(_ tableView: UITableView,
     numberOfRowsInSection section: Int) -> Int {
        return petitions.count
