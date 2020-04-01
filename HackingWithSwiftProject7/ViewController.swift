@@ -99,6 +99,8 @@ class ViewController: UITableViewController {
         
         
         
+        
+        
         let urlString: String
         
         if navigationController?.tabBarItem.tag == 0 {
@@ -123,6 +125,14 @@ class ViewController: UITableViewController {
  
         
         }
+    @objc func search(){
+        let ac = UIAlertController(title: "Enter the keyword", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        
+        
+        
+        
+    }
     
     @objc func showCredit() {
         let ac = UIAlertController(title: "Credit", message: "The data comes from the We The People API of the Whitehouse.", preferredStyle: .alert)
