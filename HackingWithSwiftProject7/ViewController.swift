@@ -129,10 +129,23 @@ class ViewController: UITableViewController {
         let ac = UIAlertController(title: "Enter the keyword", message: nil, preferredStyle: .alert)
         ac.addTextField()
         
-        
+        let summitAction = UIAlertAction(title: "Submit", style: .default) {
+            
+            // The part I'm still confused
+            [weak self, weak ac] action in
+            
+            guard let userAnswer = ac?.textFields?[0].text else {
+                return
+            }
+            
+            
+            
+        }
         
         
     }
+    
+    
     
     @objc func showCredit() {
         let ac = UIAlertController(title: "Credit", message: "The data comes from the We The People API of the Whitehouse.", preferredStyle: .alert)
