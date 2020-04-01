@@ -94,6 +94,10 @@ class ViewController: UITableViewController {
         // let urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
         let credits = UIBarButtonItem(title: "Credit", style: .plain, target: self, action: #selector(showCredit))
           navigationItem.rightBarButtonItem = credits
+        let search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: nil)
+        navigationItem.leftBarButtonItem = search
+        
+        
         
         let urlString: String
         
