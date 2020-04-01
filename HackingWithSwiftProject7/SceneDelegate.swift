@@ -17,6 +17,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        // rootViewController is the initial controller, in this case it is supposed to be the ViewController, but it's embedded in a navigation controller that is embedded in a tab bar controller, therefore here it is a UITabBarController
+              if let tabBarController = window?.rootViewController as? UITabBarController {
+                  // Since we need to create a new view controller, we need a reference to our storyboard
+                  let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                  // Create the view controller wrapped in the navigation controller using this method
+                  // We want the navigation controller to be passed in (Using the Storyboard ID we give before)
+                  let vc = storyboard.instantiateViewController(withIdentifier:"NavController")
+                  // Create a new tab bar item with toprated icon
+                  // Use tag 1 for identification
+                  vc.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 1)
+                  // add the new view controller into the tab bar controller's view controller array
+                  // Now there is one view controller in each tab
+                  // The same code will be executed in this new view controller
+                  tabBarController.viewControllers?.append(vc)
+              }
         guard let _ = (scene as? UIWindowScene) else { return }
     }
 
