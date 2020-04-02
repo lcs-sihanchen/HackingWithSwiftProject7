@@ -87,14 +87,19 @@ class ViewController: UITableViewController {
     
     var filterPetitions = [Petition]()
     
-    var tag = 0
+    var isFiltered = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         // Download the content(JSON file)
         // let urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
         let credits = UIBarButtonItem(title: "Credit", style: .plain, target: self, action: #selector(showCredit))
+        
+        navigationController?.toolbarItems = []
         navigationItem.rightBarButtonItem = credits
+        
+        
         let search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searching))
         navigationItem.leftBarButtonItem = search
         
@@ -142,24 +147,29 @@ class ViewController: UITableViewController {
             self?.filter(with: userAnswer)
             
         }
-        tag = 0
+        
+        
         ac.addAction(submitAction)
         present(ac, animated: true)
+        filterPetitions.removeAll()
     }
     
     func filter(with word: String){
         
         for n in 0...petitions.count - 1 {
-            if petitions[n].title.contains(word){
+            if petitions[n].title.lowercased().contains(word.lowercased()){
                 filterPetitions.append(petitions[n])
             }
         }
         
-        guard filterPetitions.isEmpty == false else {
+        guard !filterPetitions.isEmpty else {
+            let ac = UIAlertController(title: "Error", message: "The petition with the keyword \(word) does not exist.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Continue", style: .cancel))
+            present(ac, animated: true)
             return
         }
         
-        tag = 1
+        isFiltered = true
         tableView.reloadData()
         
     }
@@ -173,7 +183,7 @@ class ViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
-        if tag == 0{
+        if isFiltered == false {
             return petitions.count
         } else {
             return filterPetitions.count
@@ -184,9 +194,10 @@ class ViewController: UITableViewController {
         indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier:
             "Cell", for: indexPath)
+        
         var petition: Petition
         // access the petitions in the array
-        if tag == 0 {
+        if isFiltered == false {
             petition = petitions[indexPath.row]
         } else {
             petition = filterPetitions[indexPath.row]
@@ -210,6 +221,7 @@ class ViewController: UITableViewController {
             petitions = jsonPetitions.results
             
             // Everytime the view has been opened, refresh
+            
             tableView.reloadData()
         }
         
@@ -220,7 +232,13 @@ class ViewController: UITableViewController {
     override func tableView(_ tableView: UITableView,
                             didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
-        vc.detailItem = petitions[indexPath.row]
+        if isFiltered == false {
+            vc.detailItem = petitions[indexPath.row]
+
+        } else {
+            vc.detailItem = filterPetitions[indexPath.row]
+
+        }
         navigationController?.pushViewController(vc, animated: true)
     }
     
