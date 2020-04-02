@@ -96,8 +96,10 @@ class ViewController: UITableViewController {
         // let urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
         let credits = UIBarButtonItem(title: "Credit", style: .plain, target: self, action: #selector(showCredit))
         
-        navigationController?.toolbarItems = []
-        navigationItem.rightBarButtonItem = credits
+        let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshing))
+        
+        
+        navigationItem.rightBarButtonItems = [credits, refresh]
         
         
         let search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searching))
@@ -131,6 +133,12 @@ class ViewController: UITableViewController {
         
         
     }
+    
+    @objc func refreshing() {
+        
+        
+    }
+ 
     @objc func searching(){
         let ac = UIAlertController(title: "Enter the keyword", message: nil, preferredStyle: .alert)
         ac.addTextField()
@@ -151,7 +159,7 @@ class ViewController: UITableViewController {
         
         ac.addAction(submitAction)
         present(ac, animated: true)
-        filterPetitions.removeAll()
+        filterPetitions.removeAll(keepingCapacity: true)
     }
     
     func filter(with word: String){
@@ -181,7 +189,7 @@ class ViewController: UITableViewController {
         
         present(ac, animated: true)
     }
-    override func tableView(_ tableView: UITableView,
+   @objc override func tableView(_ tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
         if isFiltered == false {
             return petitions.count
@@ -190,7 +198,7 @@ class ViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt
+   @objc override func tableView(_ tableView: UITableView, cellForRowAt
         indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier:
             "Cell", for: indexPath)
