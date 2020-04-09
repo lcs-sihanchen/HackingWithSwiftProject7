@@ -159,7 +159,7 @@ class ViewController: UITableViewController {
         
         ac.addAction(submitAction)
         present(ac, animated: true)
-        filterPetitions.removeAll(keepingCapacity: true)
+        filterPetitions.removeAll()
     }
     
     func filter(with word: String){
@@ -217,7 +217,8 @@ class ViewController: UITableViewController {
         // Subtitle of the cell
         cell.detailTextLabel?.text = petition.body
         
-        
+        isFiltered = false
+        filterPetitions = []
         return cell
     }
     
@@ -248,6 +249,7 @@ class ViewController: UITableViewController {
 
         }
         navigationController?.pushViewController(vc, animated: true)
+        isFiltered = false
     }
     
     // Show the error if the webView does not load or if let statements doesn't pass
