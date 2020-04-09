@@ -89,6 +89,7 @@ class ViewController: UITableViewController {
     
     var isFiltered = false
     
+    var canBeRefreshed = false
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -96,10 +97,10 @@ class ViewController: UITableViewController {
         // let urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
         let credits = UIBarButtonItem(title: "Credit", style: .plain, target: self, action: #selector(showCredit))
         
-        let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshing))
+        let reset = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(resetting))
         
         
-        navigationItem.rightBarButtonItems = [credits, refresh]
+        navigationItem.rightBarButtonItems = [credits, reset]
         
         
         let search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searching))
@@ -134,8 +135,9 @@ class ViewController: UITableViewController {
         
     }
     
-    @objc func refreshing() {
-        
+    @objc func resetting() {
+        canBeRefreshed = true
+        tableView.reloadData()
         
     }
  
@@ -193,9 +195,11 @@ class ViewController: UITableViewController {
                             numberOfRowsInSection section: Int) -> Int {
         if isFiltered == false {
             return petitions.count
-        } else {
+        } else if isFiltered == true {
             return filterPetitions.count
-        }
+        } else {
+            return petitions.count
+    }
     }
     
    @objc override func tableView(_ tableView: UITableView, cellForRowAt
@@ -207,9 +211,11 @@ class ViewController: UITableViewController {
         // access the petitions in the array
         if isFiltered == false {
             petition = petitions[indexPath.row]
-        } else {
+        } else if isFiltered == true {
             petition = filterPetitions[indexPath.row]
-        }
+        } else {
+            petition = petitions[indexPath.row]
+    }
         
         
         // Now constant petition is of type PETITION, therefore it can use its property ".title"
@@ -244,9 +250,11 @@ class ViewController: UITableViewController {
         if isFiltered == false {
             vc.detailItem = petitions[indexPath.row]
 
-        } else {
+        } else if isFiltered == true {
             vc.detailItem = filterPetitions[indexPath.row]
 
+        } else {
+            vc.detailItem = petitions[indexPath.row]
         }
         navigationController?.pushViewController(vc, animated: true)
         isFiltered = false
